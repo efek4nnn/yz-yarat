@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import os
+import traceback
 import uuid
 
 from dotenv import load_dotenv
@@ -406,6 +407,12 @@ def create_app():
             return jsonify({"error": f"API hatası: {exc}"}), 500
 
         return jsonify({"reply": reply_text})
+
+    # GEÇİCİ DEBUG: hatanın gerçek sebebini sitede görmek için.
+    # Sorun çözülünce bu bloğu app.py'den sil.
+    @app.errorhandler(Exception)
+    def _debug_show_error(e):
+        return "<pre>" + traceback.format_exc() + "</pre>", 500
 
     return app
 
